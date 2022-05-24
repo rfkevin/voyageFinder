@@ -9,10 +9,14 @@ import { getPlacesData } from "./api";
 
 const App = () => {
   const [places, setPlaces] = useState([]);
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
   const [coordinates, setCoordinate] = useState({});
   const [bounds, setBounds] = useState({});
   const [child, setChild] = useState(null);
   const [isLoading, setLoading] = useState(false);
+  const [type, setType] = useState("restaurants");
+  const [rating, setRating] = useState("");
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       ({ coords: { latitude, longitude } }) =>
@@ -20,16 +24,20 @@ const App = () => {
     );
   }, []);
   useEffect(() => {
-    setLoading(true)
-    getPlacesData(bounds.sw, bounds.ne).then((data) => {
+    const filteredPlaces = places.filter((place) => place.rating > rating);
+    setFilteredPlaces(filteredPlaces)
+  },[rating])
+  useEffect(() => {
+    setLoading(true);
+    getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
       setPlaces(data);
-      setLoading(false)
+      setLoading(false);
     });
-  }, [coordinates, bounds]);
+  }, [type, coordinates, bounds]);
   return (
     <>
       <CssBaseline />
-      <Header />
+      <Header setCoordinate = {setCoordinate}/>
       <Grid
         container
         spacing={3}
@@ -38,15 +46,23 @@ const App = () => {
         }}
       >
         <Grid item xs={12} md={4}>
-          <List places={places} child = {child} isLoading = {isLoading} />
+          <List
+            places={filteredPlaces.length ? filteredPlaces : places}
+            child={child}
+            isLoading={isLoading}
+            type={type}
+            setType={setType}
+            rating={rating}
+            setRating={setRating}
+          />
         </Grid>
         <Grid item xs={12} md={8}>
           <Map
             setCoordinate={setCoordinate}
             setBounds={setBounds}
             coordinates={coordinates}
-            places = {places}
-            setChild = {setChild}
+            places={filteredPlaces.length ? filteredPlaces : places}
+            setChild={setChild}
           />
         </Grid>
       </Grid>

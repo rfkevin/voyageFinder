@@ -12,10 +12,8 @@ import {
 
 import useStyles from "./style";
 
-const List = ({ places, child, isLoading }) => {
+const List = ({ places, child, isLoading, type, setType, rating, setRating }) => {
   const classes = useStyles();
-  const [type, setType] = useState("Restaurants");
-  const [rating, setRating] = useState("");
   const [elRefs, setElRefs] = useState([]);
   useEffect(() => {
     const refs = Array(places?.length)
@@ -37,9 +35,9 @@ const List = ({ places, child, isLoading }) => {
           <FormControl className={classes.formControl}>
             <InputLabel>type </InputLabel>
             <Select value={type} onChange={(e) => setType(e.target.value)}>
-              <MenuItem value="Restaurants"> Restaurants </MenuItem>
-              <MenuItem value="Hotels"> Hotels </MenuItem>
-              <MenuItem value="Attraction"> Attraction </MenuItem>>
+              <MenuItem value="restaurants"> Restaurants </MenuItem>
+              <MenuItem value="hotels"> Hotels </MenuItem>
+              <MenuItem value="attractions"> Attraction </MenuItem>>
             </Select>
           </FormControl>
           <FormControl className={classes.formControl}>
