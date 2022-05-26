@@ -2,17 +2,20 @@ import React,{useState} from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import { AppBar, Toolbar, Typography, InputBase, Box } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import {useDispatch} from "react-redux";
+import {setCoordinates} from '../../store/slices';
 
 import useStyles from "./style.js";
 
-const Header = ({ setCoordinate }) => {
+const Header = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [autocomplete, setAutocomplete] = useState(null);
   const onLoad = (autoC) => setAutocomplete(autoC);
   const onPlaceChanged = () => {
     const lat = autocomplete.getPlace().geometry.location.lat();
     const lng = autocomplete.getPlace().geometry.location.lng();
-    setCoordinate({lat, lng});
+    dispatch(setCoordinates({lat, lng}));
   }
   return (
     <AppBar position="static">

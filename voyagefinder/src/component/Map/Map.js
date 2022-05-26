@@ -3,10 +3,13 @@ import GoogleMapReact from "google-map-react";
 import { Paper, Typography, useMediaQuery } from "@material-ui/core";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import Rating from "@material-ui/lab/Rating";
-
+import {useDispatch, useSelector} from "react-redux";
+import {setCoordinates} from '../../store/slices';
 import useStyles from "./style";
 
-const Map = ({ setCoordinate, setBounds, coordinates, places, setChild }) => {
+const Map = ({ setBounds, places, setChild }) => {
+  const dispatch = useDispatch();
+  const coordinates = useSelector((state) => state.coordinates);
   const classes = useStyles();
   const isPc = useMediaQuery("(min-width: 600px)");
 
@@ -14,13 +17,13 @@ const Map = ({ setCoordinate, setBounds, coordinates, places, setChild }) => {
   return (
     <div className={classes.mapContainer}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyB57RMkBGpZ8_lWsyHnuS0dBKhE0OuwKmU" }}
+        bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY}}
         defaultCentre={coordinates}
         center={coordinates}
         defaultZoom={14}
         margin={[50, 50, 50, 50]}
         onChange={(e) => {
-          setCoordinate({ lat: e.center.lat, lng: e.center.lng });
+          dispatch(setCoordinates({ lat: e.center.lat, lng: e.center.lng }));
           setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
         }}
         onChildClick = {(child) => {

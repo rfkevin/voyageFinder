@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { CssBaseline, Grid } from "@material-ui/core";
+import {useDispatch, useSelector} from "react-redux"
 
 import Header from "./component/Header/Header";
 import List from "./component/List/List";
 import Map from "./component/Map/Map";
+import {setPlaces, setFiltered, setCoordinates} from "./store/slices"
 
 import { getPlacesData } from "./api";
 
 const App = () => {
-  const [places, setPlaces] = useState([]);
-  const [filteredPlaces, setFilteredPlaces] = useState([]);
-  const [coordinates, setCoordinate] = useState({});
+  const dispatch = useDispatch();
+  const places = useSelector((state) => state.place);
+  const filteredPlaces = useSelector((state) => state.filtred);
+  const coordinates = useSelector((state) => state.coordinates);
   const [bounds, setBounds] = useState({});
   const [child, setChild] = useState(null);
   const [isLoading, setLoading] = useState(false);
@@ -20,24 +23,27 @@ const App = () => {
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       ({ coords: { latitude, longitude } }) =>
-        setCoordinate({ lat: latitude, lng: longitude })
+        dispatch(setCoordinates({ lat: latitude, lng: longitude }))
     );
   }, []);
   useEffect(() => {
     const filteredPlaces = places.filter((place) => place.rating > rating);
-    setFilteredPlaces(filteredPlaces)
-  },[rating])
+    dispatch(setFiltered(filteredPlaces));
+  }, [rating]);
   useEffect(() => {
-    setLoading(true);
-    getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
-      setPlaces(data);
-      setLoading(false);
-    });
-  }, [type, coordinates, bounds]);
+    if (bounds.sw && bounds.ne) {
+      setLoading(true);
+      getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
+        dispatch(setPlaces( data?.filter((place) => place.name && place.num_reviews > 0)));
+        dispatch(setFiltered([]));
+        setLoading(false);
+      });
+    }
+  }, [type, bounds]);
   return (
     <>
       <CssBaseline />
-      <Header setCoordinate = {setCoordinate}/>
+      <Header />
       <Grid
         container
         spacing={3}
@@ -58,9 +64,7 @@ const App = () => {
         </Grid>
         <Grid item xs={12} md={8}>
           <Map
-            setCoordinate={setCoordinate}
             setBounds={setBounds}
-            coordinates={coordinates}
             places={filteredPlaces.length ? filteredPlaces : places}
             setChild={setChild}
           />
