@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { CssBaseline, Grid } from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux"
 
 import Header from "./component/Header/Header";
 import List from "./component/List/List";
 import Map from "./component/Map/Map";
-import {setPlaces, setFiltered, setCoordinates} from "./store/slices"
+import {setPlaces, setFiltered, setCoordinates, setLoading} from "./store/slices"
 
 import { getPlacesData } from "./api";
 
@@ -13,12 +13,9 @@ const App = () => {
   const dispatch = useDispatch();
   const places = useSelector((state) => state.place);
   const filteredPlaces = useSelector((state) => state.filtred);
-  const coordinates = useSelector((state) => state.coordinates);
-  const [bounds, setBounds] = useState({});
-  const [child, setChild] = useState(null);
-  const [isLoading, setLoading] = useState(false);
-  const [type, setType] = useState("restaurants");
-  const [rating, setRating] = useState("");
+  const bounds = useSelector((state) => state.bounds);
+  const type = useSelector((state) => state.type);
+  const rating = useSelector((state) => state.rating);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -32,11 +29,11 @@ const App = () => {
   }, [rating]);
   useEffect(() => {
     if (bounds.sw && bounds.ne) {
-      setLoading(true);
+      dispatch(setLoading(true));
       getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
         dispatch(setPlaces( data?.filter((place) => place.name && place.num_reviews > 0)));
         dispatch(setFiltered([]));
-        setLoading(false);
+        dispatch(setLoading(false));
       });
     }
   }, [type, bounds]);
@@ -54,19 +51,12 @@ const App = () => {
         <Grid item xs={12} md={4}>
           <List
             places={filteredPlaces.length ? filteredPlaces : places}
-            child={child}
-            isLoading={isLoading}
-            type={type}
-            setType={setType}
-            rating={rating}
-            setRating={setRating}
+
           />
         </Grid>
         <Grid item xs={12} md={8}>
           <Map
-            setBounds={setBounds}
             places={filteredPlaces.length ? filteredPlaces : places}
-            setChild={setChild}
           />
         </Grid>
       </Grid>
