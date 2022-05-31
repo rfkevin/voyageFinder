@@ -1,4 +1,7 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setDate } from "./placeDetailsSlice";
+import { createReservations  } from '../slices/reservatioslice';
 import {
   Box,
   Typography,
@@ -8,14 +11,19 @@ import {
   CardContent,
   CardActions,
   Chip,
+  TextField
 } from "@material-ui/core";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import PhoneIcon from "@material-ui/icons/Phone";
+import { DateTimePicker} from '@mui/lab';
 import Rating from "@material-ui/lab/Rating";
 
 import useStyles from "./style.js";
 
 const PlaceDetails = ({ place, selected, refProp }) => {
+  const dispatch = useDispatch();
+  const date = useSelector((state) => state.date);
+  const type = useSelector((state) => state.type);
   const classes = useStyles();
   if (selected)
     refProp?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -89,6 +97,33 @@ const PlaceDetails = ({ place, selected, refProp }) => {
             Website
           </Button>
         </CardActions>
+        <CardActions>
+          <  DateTimePicker
+            label="Date Picker"
+            renderInput={(params) => <TextField{...params}/>}
+            value={date}
+            minDate = {new Date()}
+            onChange={(newvalue) => {
+              dispatch(setDate(newvalue.toString()));
+            }}
+          />
+        </CardActions>
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => {
+            dispatch(createReservations({
+              id: "test1",
+              type: type,
+              num: place.phone,
+              etablissment: place.name,
+              confirmation: false,
+              date: date,
+            }));
+          }}
+        >
+          reservation
+        </Button>
       </CardContent>
     </Card>
   );

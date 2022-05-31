@@ -4,7 +4,7 @@ import { Paper, Typography, useMediaQuery } from "@material-ui/core";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import Rating from "@material-ui/lab/Rating";
 import {useDispatch, useSelector} from "react-redux";
-import {setCoordinates, setBounds, setChild} from '../../store/slices';
+import {setCoordinates, setBounds, setChild} from '../../../store/slices';
 import useStyles from "./style";
 
 const Map = ({ places}) => {

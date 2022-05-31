@@ -1,4 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { reservationSlice } from '../component/Attraction/slices/reservatioslice';
+import { dateSlice } from '../component/Attraction/PlaceDetails/placeDetailsSlice';
+
 import {
   placeSlice,
   filtredSlice,
@@ -19,5 +22,8 @@ export const store = configureStore({
     loading : loadingSlice.reducer,
     type :typeSlice.reducer,
     rating : ratingSlice.reducer,
+    reservation : reservationSlice.reducer,
+    date : dateSlice.reducer,
+    
   },
 });

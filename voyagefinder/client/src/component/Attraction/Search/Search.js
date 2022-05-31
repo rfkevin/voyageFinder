@@ -1,13 +1,13 @@
 import React,{useState} from "react";
 import { Autocomplete } from "@react-google-maps/api";
-import { AppBar, Toolbar, Typography, InputBase, Box } from "@material-ui/core";
+import { AppBar, Toolbar, InputBase, Box } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import {useDispatch} from "react-redux";
-import {setCoordinates} from '../../store/slices';
+import {setCoordinates  } from '../../../store/slices';
 
 import useStyles from "./style.js";
 
-const Header = () => {
+const Search = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [autocomplete, setAutocomplete] = useState(null);
@@ -20,9 +20,6 @@ const Header = () => {
   return (
     <AppBar position="static">
       <Toolbar className={classes.toolbar}>
-        <Typography variant="h6" className={classes.title}>
-          TravelFinder
-        </Typography>
         <Box display="flex">
           <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
             <div className={classes.search}>
@@ -41,4 +38,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Search;

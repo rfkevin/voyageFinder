@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createRef } from "react";
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
 import { useSelector, useDispatch} from "react-redux";
-import {setType, setRating} from '../../store/slices';
+import { setType, setRating } from '../../../store/slices';
 import {
   CircularProgress,
   Grid,
