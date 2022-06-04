@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { reservationSlice } from '../component/Attraction/slices/reservatioslice';
 import { dateSlice } from '../component/Attraction/PlaceDetails/placeDetailsSlice';
+import { userSlice  } from '../component/Auth/slices';
 
 import {
   placeSlice,
@@ -24,6 +25,7 @@ export const store = configureStore({
     rating : ratingSlice.reducer,
     reservation : reservationSlice.reducer,
     date : dateSlice.reducer,
-    
+    user : userSlice.reducer
+
   },
 });

@@ -25,7 +25,11 @@ export const getPlacesData = async (type, sw, ne) => {
   }
 };
 
-const url = "http://localhost:5000/posts";
-export const fetchReservation = () => axios.get(url);
+const API = axios.create({baseURL: "http://localhost:5000"});
 
-export const createReservation = (newReservation) => axios.post(url, newReservation)
+export const fetchReservation = () => API.get('/posts');
+
+export const createReservation = (newReservation) => API.post('/posts', newReservation)
+
+export const signIn = (formData) => API.post('/user/signin', formData);
+export const signUp = (formData) => API.post('/user/signup', formData);

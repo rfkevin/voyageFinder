@@ -3,22 +3,26 @@ import { CssBaseline } from "@material-ui/core";
 import AttractionPage from "./component/Attraction/AttractionPage";
 import { LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import Navbar from "./component/Navbar/Navbar";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LandingPage from "./component/LandingPage/LandingPage";
+import Auth from "./component/Auth/Auth";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const App = () => {
   return (
     <>
-      <BrowserRouter>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <CssBaseline />
-          <Navbar />
-          <Switch>
-          <Route />
-          </Switch>
-          <AttractionPage />
-        </LocalizationProvider>
-      </BrowserRouter>
+      <GoogleOAuthProvider clientId="426309683556-t9lvbehn86rhhjs1ktqisv8o16r3ssiq.apps.googleusercontent.com">
+        <BrowserRouter>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <CssBaseline />
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/setplaning" element={<AttractionPage />} />
+            </Routes>
+          </LocalizationProvider>
+        </BrowserRouter>
+      </GoogleOAuthProvider>
     </>
   );
 };
