@@ -25,11 +25,38 @@ export const getPlacesData = async (type, sw, ne) => {
   }
 };
 
-const API = axios.create({baseURL: "http://localhost:5000"});
+export const flightAviation = async (origin, destination, dateResv) => {
+  try {
+    console.log("getFlightList");
+    console.log(origin);
+    console.log(destination);
+    console.log(dateResv)
+    const data = await axios.request({
+      methode: "GET",
+      url: "https://skyscanner44.p.rapidapi.com/search",
+      params: {
+        adults: "1",
+        origin: origin,
+        destination: destination,
+        departureDate: dateResv,
+      },
+      headers: {
+        "X-RapidAPI-Host": "skyscanner44.p.rapidapi.com",
+        "X-RapidAPI-Key": process.env.REACT_APP_RAPIDAPI_SKY_KEY,
+      },
+    });
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+};
 
-export const fetchReservation = () => API.get('/posts');
+const API = axios.create({ baseURL: "http://localhost:5000" });
 
-export const createReservation = (newReservation) => API.post('/posts', newReservation)
+export const fetchReservation = () => API.get("/posts");
 
-export const signIn = (formData) => API.post('/user/signin', formData);
-export const signUp = (formData) => API.post('/user/signup', formData);
+export const createReservation = (newReservation) =>
+  API.post("/posts", newReservation);
+
+export const signIn = (formData) => API.post("/user/signin", formData);
+export const signUp = (formData) => API.post("/user/signup", formData);

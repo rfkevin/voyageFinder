@@ -9,62 +9,44 @@ import useStyles from "./style";
 
 const Map = ({ places}) => {
   const dispatch = useDispatch();
-  const coordinates = useSelector((state) => state.coordinates);
+  const coords = useSelector((state) => state.coordinates);
   const classes = useStyles();
-  const isPc = useMediaQuery("(min-width: 600px)");
+  const matches = useMediaQuery("(min-width: 600px)");
 
-  console.log(places);
   return (
     <div className={classes.mapContainer}>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY}}
-        defaultCentre={coordinates}
-        center={coordinates}
+        bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY }}
+        defaultCenter={coords}
+        center={coords}
         defaultZoom={14}
         margin={[50, 50, 50, 50]}
+        options={{ disableDefaultUI: true, zoomControl: true}}
         onChange={(e) => {
           dispatch(setCoordinates({ lat: e.center.lat, lng: e.center.lng }));
           dispatch(setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw }));
         }}
-        onChildClick = {(child) => {
-          dispatch(setChild(child))
-        }}
+        onChildClick={(child) => dispatch(setChild(child))}
       >
-        {places?.map((place, i) => (
+        {places.length && places.map((place, i) => (
           <div
             className={classes.markerContainer}
             lat={Number(place.latitude)}
             lng={Number(place.longitude)}
             key={i}
           >
-            {!isPc ? (
-              <LocationOnOutlinedIcon color="primary" fontSize="large" />
-            ) : (
-              <Paper elevation={3} className={classes.paper}>
-                <Typography
-                  className={classes.typography}
-                  variant="subtitle2"
-                  gutterBottom
-                >
-                  {" "}
-                  {place.name}
-                </Typography>
-                <img
-                  className={classes.pointer}
-                  src={
-                    place.photo
-                      ? place.photo.images.large.url
-                      : "https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg"
-                  }
-                />
-                <Rating
-                  name="read-only"
-                  size="small"
-                  value={Number(place.rating)}
-                  readOnly
-                />
-              </Paper>
-            )}
+            {!matches
+              ? <LocationOnOutlinedIcon color="primary" fontSize="large" />
+              : (
+                <Paper elevation={3} className={classes.paper}>
+                  <Typography className={classes.typography} variant="subtitle2" gutterBottom> {place.name}</Typography>
+                  <img
+                    className={classes.pointer}
+                    src={place.photo ? place.photo.images.large.url : 'https://www.foodserviceandhospitality.com/wp-content/uploads/2016/09/Restaurant-Placeholder-001.jpg'}
+                  />
+                  <Rating name="read-only" size="small" value={Number(place.rating)} readOnly />
+                </Paper>
+              )}
           </div>
         ))}
       </GoogleMapReact>

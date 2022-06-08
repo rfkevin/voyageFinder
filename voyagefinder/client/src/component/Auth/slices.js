@@ -5,12 +5,11 @@ export const signin = createAsyncThunk(
   "user/signIn",
   async (formData) => {
     try {
-      const { data } = await api.signIn(formData);
+      const data = await api.signIn(formData);
 
-      return data
+      return data.data
     } catch (error) {
-      console.log(error.message);
-      return error.message;
+      console.log(error);
     }
   }
 );
@@ -19,12 +18,11 @@ export const signup = createAsyncThunk(
   "user/signup",
   async (formData) => {
     try {
-      const { data } = await api.signUp(formData);
+      const  data  = await api.signUp(formData);
       console.log(data)
-      return data
+      return data.data
     } catch (error) {
-      console.log(error.message);
-      return error.message;
+      console.log(error);
     }
   }
 );

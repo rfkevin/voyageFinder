@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./component/LandingPage/LandingPage";
 import Auth from "./component/Auth/Auth";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import Flight  from './component/Flight/flight';
 
 const App = () => {
   return (
@@ -19,6 +20,8 @@ const App = () => {
               <Route path="/" element={<LandingPage />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/setplaning" element={<AttractionPage />} />
+              <Route path="/setplaning" element={<AttractionPage />} />
+              <Route path="/flight" element={<Flight />} />
             </Routes>
           </LocalizationProvider>
         </BrowserRouter>

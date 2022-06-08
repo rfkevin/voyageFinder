@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authUser } from "./slices";
 import jwt_decode from "jwt-decode";
-import { signin, signup } from './slices';
+import { signin, signup } from "./slices";
 import {
   Avatar,
   Button,
@@ -40,20 +40,29 @@ const Auth = () => {
     setShowPassoword((prevShowPassword) => !prevShowPassword);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(isSignup){
-      dispatch(signup(formData));
-    }else{
-      dispatch(signin(formData));
+    if (isSignup) {
+      try {
+        dispatch(signup(formData));
+        navigate("/");
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        dispatch(signin(formData));
+        navigate("/");
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
-    setShowPassoword(false)
+    setShowPassoword(false);
   };
-  console.log(user);
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={6}>
@@ -117,9 +126,16 @@ const Auth = () => {
               const decoded = jwt_decode(credentialResponse.credential);
               console.log(credentialResponse);
               try {
-                dispatch(authUser({info : decoded, token: credentialResponse.credential}));
+                dispatch(
+                  authUser({
+                    result: decoded,
+                    token: credentialResponse.credential,
+                  })
+                );
                 navigate("/");
-              } catch (err) {}
+              } catch (err) {
+                console.log(err);
+              }
             }}
             onError={() => {
               console.log("Login Failed");

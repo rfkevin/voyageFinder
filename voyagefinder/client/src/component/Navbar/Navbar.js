@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 const MyComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user  = useSelector((state) => state.user?.info);
+  const user  = useSelector((state) => state.user?.result);
   const classes = useStyles();
   const logout = () => {
     dispatch(logOut());
