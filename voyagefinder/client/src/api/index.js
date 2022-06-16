@@ -1,5 +1,5 @@
 import axios from "axios";
-
+// hotels , attraction, restaurant API
 export const getPlacesData = async (type, sw, ne) => {
   try {
     const {
@@ -24,13 +24,9 @@ export const getPlacesData = async (type, sw, ne) => {
     console.log(error);
   }
 };
-
+// flight API
 export const flightAviation = async (origin, destination, dateResv) => {
   try {
-    console.log("getFlightList");
-    console.log(origin);
-    console.log(destination);
-    console.log(dateResv)
     const data = await axios.request({
       methode: "GET",
       url: "https://skyscanner44.p.rapidapi.com/search",
@@ -50,13 +46,17 @@ export const flightAviation = async (origin, destination, dateResv) => {
     console.log(e);
   }
 };
-
+// Database
 const API = axios.create({ baseURL: "http://localhost:5000" });
 
 export const fetchReservation = () => API.get("/posts");
 
 export const createReservation = (newReservation) =>
   API.post("/posts", newReservation);
-
+//user
 export const signIn = (formData) => API.post("/user/signin", formData);
 export const signUp = (formData) => API.post("/user/signup", formData);
+// planing
+export const createPlaning = (id) => API.post("/planing", id);
+export const getPlaning = (id) => API.get(`/planing/${id}`);
+export const  updatePlaning = (id, planing) => API.patch(`/planing`, {email: id, planing:planing});

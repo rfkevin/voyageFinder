@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import React, { useState, useEffect } from "react";
+import { prototype } from "./prototype";
+import { setFlight, dataFormating } from "./flightSlice";
 import {
   ProSidebar,
   Menu,
@@ -7,7 +9,7 @@ import {
   SubMenu,
   SidebarFooter,
   SidebarHeader,
-  SidebarContent
+  SidebarContent,
 } from "react-pro-sidebar";
 import { setDate } from "../Attraction/PlaceDetails/placeDetailsSlice";
 import { DatePicker } from "@mui/lab";
@@ -15,7 +17,7 @@ import Input from "../Auth/input";
 import useStyles from "./style";
 import { CircularProgress, TextField, Button } from "@material-ui/core";
 import * as moment from "moment";
-import 'react-pro-sidebar/dist/css/styles.css';
+import "react-pro-sidebar/dist/css/styles.css";
 
 
 const Search = () => {
@@ -24,6 +26,8 @@ const Search = () => {
     origin: "",
     destination: "",
   };
+  const formatedData = dataFormating(prototype);
+  console.log(formatedData);
   const [formData, setFormData] = useState(initialState);
   const date = useSelector((state) => state.date);
   const dispatch = useDispatch();
@@ -36,61 +40,63 @@ const Search = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   return (
-    <div className = {classes.container}>
-    <ProSidebar >
-      <SidebarHeader>
-        <MenuItem>Search for flight</MenuItem>
-      </SidebarHeader>
-      <SidebarContent>
-        <div style={{ height: "85vh" }} className = {classes.form}>
-      <form className={classes.form} onSubmit={handleSubmit} >
-        <Menu iconShape="square">
-          <MenuItem>
-            <DatePicker
-              disablePast={true}
-              name="date"
-              label="Date Picker"
-              inputFormat="y-M-d"
-              format="y-M-d"
-              renderInput={(params) => <TextField {...params} />}
-              value={date}
-              minDate={new Date()}
-              onChange={(newvalue) => {
-                dispatch(setDate(newvalue.toString()));
-              }}
-            />
-          </MenuItem>
-          <MenuItem>
-            <Input
-              name="origin"
-              label="origin airport IATA"
-              handleChange={handleChange}
-            />
-          </MenuItem>
-          <MenuItem>
-            <Input
-              className={classes.input}
-              name="destination"
-              label="destination airport IATA"
-              handleChange={handleChange}
-            />
-          </MenuItem>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Search
-          </Button>
-        </Menu>
-      </form>
-      </div>
-      </SidebarContent>
-      <SidebarFooter>copyright</SidebarFooter>
-    </ProSidebar>
-</div>
+    <div className={classes.container}>
+      <ProSidebar>
+        <SidebarHeader>
+          <MenuItem>Search for flight</MenuItem>
+        </SidebarHeader>
+        <SidebarContent>
+          <div style={{ height: "85vh" }} className={classes.form}>
+            <form className={classes.form} onSubmit={handleSubmit}>
+              <Menu iconShape="square">
+                <MenuItem>
+                  <DatePicker
+                    disablePast={true}
+                    name="date"
+                    label="Date Picker"
+                    inputFormat="y-M-d"
+                    format="y-M-d"
+                    renderInput={(params) => <TextField {...params} />}
+                    value={date}
+                    minDate={new Date()}
+                    onChange={(newvalue) => {
+                      dispatch(setDate(newvalue.toString()));
+                    }}
+                  />
+                </MenuItem>
+                <MenuItem>
+                  <Input
+                    name="origin"
+                    label="origin airport IATA"
+                    handleChange={handleChange}
+                  />
+                </MenuItem>
+                <MenuItem>
+                  <Input
+                    className={classes.input}
+                    name="destination"
+                    label="destination airport IATA"
+                    handleChange={handleChange}
+                  />
+                </MenuItem>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    dispatch(setFlight(formatedData));
+                  }}
+                >
+                  Search
+                </Button>
+              </Menu>
+            </form>
+          </div>
+        </SidebarContent>
+        <SidebarFooter>copyright</SidebarFooter>
+      </ProSidebar>
+    </div>
   );
 };
 

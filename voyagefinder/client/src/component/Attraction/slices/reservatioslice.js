@@ -18,7 +18,6 @@ export const createReservations = createAsyncThunk(
   "reservation/createReservation",
   async (reservation) => {
     try {
-      console.log(reservation);
       const response = await createReservation(reservation);
       return response.data;
     } catch (error) {

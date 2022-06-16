@@ -19,5 +19,12 @@ export default makeStyles((theme) => ({
  media:{
    width: '100%',
    height: 100
+ },
+ loading: {
+   width: "100%",
+   display: "flex",
+   justifyContent: "center",
+   alignItems: "center",
+   align : "center"
  }
 }));

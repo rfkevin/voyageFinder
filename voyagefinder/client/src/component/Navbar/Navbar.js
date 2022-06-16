@@ -18,7 +18,7 @@ const MyComponent = () => {
 
   }
   useEffect(() => {
-    const token = user?.email;
+  //  const token = user?.email;
 
     dispatch(getUser(JSON.parse(localStorage.getItem("profile"))));
   }, []);
@@ -29,7 +29,7 @@ const MyComponent = () => {
           className={classes.heading}
           component={Link}
           to="/"
-          variant="h4"
+          variant="h6"
           align="center"
         >
           DestinationFinder

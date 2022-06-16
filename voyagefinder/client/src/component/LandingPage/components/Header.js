@@ -5,12 +5,8 @@ import {
   IconButton,
   Toolbar,
   Collapse,
-  Typography,
-  Avatar,
-  Button,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import SortIcon from "@material-ui/icons/Sort";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Link as Scroll } from "react-scroll";
 
@@ -53,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Header() {
   const classes = useStyles();
-  const user = null;
   const [checked, setChecked] = useState(false);
   useEffect(() => {
     setChecked(true);
@@ -64,7 +59,7 @@ export default function Header() {
         <Toolbar className={classes.appbarWrapper}>
           <Link to="/" className={classes.appbarTitle}  style={{ textDecoration: 'none' }}>
             <h1 className={classes.appbarTitle} component={Link} to="/auth">My
-              <span className={classes.colorText}>DestinationFinder</span>
+              <span className={classes.colorText}>VoyageFinder</span>
             </h1>
           </Link>
         </Toolbar>
@@ -78,7 +73,7 @@ export default function Header() {
         <div className={classes.container}>
           <h1 className={classes.title}>
             Welcome to <br />
-            My<span className={classes.colorText}>Island.</span>
+            Voyage<span className={classes.colorText}>Finder.</span>
           </h1>
           <Scroll to="place-to-visit" smooth={true}>
             <IconButton>

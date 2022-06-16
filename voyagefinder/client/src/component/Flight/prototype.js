@@ -1196,3 +1196,34 @@ export  const prototype = {
     },
     "request": {}
 }
+
+export const darinoPrototype = [
+    {
+        val: "test",
+        obj: {
+            vobj: "test"
+        }
+    },{
+        val: "test1",
+        obj: {
+            vobj: "test1"
+        }
+    },{
+        val: "test2",
+        obj: {
+            vobj: "test2"
+        }
+    }
+]
+
+export const darinoDataFormating = (data) => {
+  var val = [] ;
+  var vobj = [];
+  console.log(data);
+  data?.map((iter) => {
+      val.push({val : iter.val});
+      vobj.push({vobj : iter.obj.vobj});
+  })
+  console.log(val);
+  console.log(vobj);
+}

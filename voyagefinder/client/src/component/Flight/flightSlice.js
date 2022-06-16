@@ -28,7 +28,7 @@ export const dataFormating = (data) => {
     indexItem = 0;
     index++;
   }
-  console.log(formatedData);
+  return formatedData;
 };
 
 export const getFlightList = createAsyncThunk(
@@ -36,14 +36,8 @@ export const getFlightList = createAsyncThunk(
   async (flightData) => {
     const { origin, destination, dateResv } = flightData;
     try {
-      console.log("getFlightList");
-      console.log(origin);
-      console.log(destination);
-      console.log(dateResv);
       const response = await flightAviation(origin, destination, dateResv);
-      console.log(response);
-      const formatedresponse = await response.data;
-      console.log(formatedresponse);
+      const formatedresponse = dataFormating(response.data);
       return formatedresponse;
     } catch (error) {
       console.log(error);
@@ -55,23 +49,12 @@ export const getFlightList = createAsyncThunk(
 export const flightSlice = createSlice({
   name: "flight",
   initialState: {
-    data: {
-      tag: "",
-      name: "Obj.data.itineraries.buckets[0] ",
-      origine: " ",
-      destination: " ",
-      departure: " ",
-      arrival: " ",
-      price: " ",
-      score: " ",
-      image: " ",
-    },
+    data: [],
     isLoading: false,
   },
   reducers: {
     setFlight: (state, action) => {
-      state.info = action.payload;
-      console.log(state.info);
+      state.data = action.payload;
       return state;
     },
   },
@@ -80,7 +63,7 @@ export const flightSlice = createSlice({
       state.isLoading = true;
     },
     [getFlightList.fulfilled]: (state, action) => {
-      state.info = action.payload;
+      state.data = action.payload;
       state.isLoading = false;
     },
     [getFlightList.rejected]: (state) => {

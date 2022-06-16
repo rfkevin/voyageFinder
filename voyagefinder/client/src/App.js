@@ -8,6 +8,8 @@ import LandingPage from "./component/LandingPage/LandingPage";
 import Auth from "./component/Auth/Auth";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Flight  from './component/Flight/flight';
+import Calendar from './component/Calendar/Calendar';
+import "./App.css"
 
 const App = () => {
   return (
@@ -22,6 +24,7 @@ const App = () => {
               <Route path="/setplaning" element={<AttractionPage />} />
               <Route path="/setplaning" element={<AttractionPage />} />
               <Route path="/flight" element={<Flight />} />
+              <Route path="/myplaning" element={<Calendar />} />
             </Routes>
           </LocalizationProvider>
         </BrowserRouter>

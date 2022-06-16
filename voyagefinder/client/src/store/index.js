@@ -3,6 +3,7 @@ import { reservationSlice } from '../component/Attraction/slices/reservatioslice
 import { dateSlice } from '../component/Attraction/PlaceDetails/placeDetailsSlice';
 import { userSlice  } from '../component/Auth/slices';
 import { flightSlice } from '../component/Flight/flightSlice';
+import { planingSlice } from '../component/Calendar/CalendarSlice';
 
 import {
   placeSlice,
@@ -27,7 +28,8 @@ export const store = configureStore({
     reservation : reservationSlice.reducer,
     date : dateSlice.reducer,
     user : userSlice.reducer,
-    flight : flightSlice.reducer
+    flight : flightSlice.reducer,
+    planing : planingSlice.reducer
 
   },
 });

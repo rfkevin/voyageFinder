@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { authUser } from "./slices";
 import jwt_decode from "jwt-decode";
 import { signin, signup } from "./slices";
+import { createPlaning } from '../Calendar/CalendarSlice';
 import {
   Avatar,
   Button,
@@ -124,7 +125,6 @@ const Auth = () => {
             auto_select
             onSuccess={(credentialResponse) => {
               const decoded = jwt_decode(credentialResponse.credential);
-              console.log(credentialResponse);
               try {
                 dispatch(
                   authUser({
@@ -132,6 +132,8 @@ const Auth = () => {
                     token: credentialResponse.credential,
                   })
                 );
+                console.log(decoded);
+                dispatch(createPlaning(decoded.email));
                 navigate("/");
               } catch (err) {
                 console.log(err);
