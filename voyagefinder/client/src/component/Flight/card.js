@@ -1,14 +1,8 @@
 import React from "react";
 import { createReservations } from "../Attraction/slices/reservatioslice";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Paper,
-  Grid,
-  Typography,
-  Box,
-  Rating,
-  Button,
-} from "@mui/material";
+import { Paper, Grid, Typography, Box, Rating, Button } from "@mui/material";
+import { reservationPlaning  } from '../Calendar/CalendarSlice';
 import {
   AccessTime,
   AirplanemodeActive,
@@ -20,6 +14,7 @@ const Card = ({ data }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const date = useSelector((state) => state.date);
+  const user = useSelector((state) => state.user);
   return (
     <Grid item xs={4}>
       <Paper elevation={4}>
@@ -90,7 +85,7 @@ const Card = ({ data }) => {
             onClick={() => {
               dispatch(
                 createReservations({
-                  id: "test1",
+                  id: user.result.email,
                   type: "Flight",
                   num: data.compagnie,
                   etablissment: data.compagnie,
@@ -98,6 +93,26 @@ const Card = ({ data }) => {
                   date: date,
                 })
               );
+              const dates = new Date(date);
+              let formatedDate = null;
+              let formatedEndDate = null;
+              const endDate = new Date(
+                dates.getTime() + data.temps * 60 * 1000
+              );
+              formatedDate = dates.toISOString();
+              formatedEndDate = endDate.toISOString();
+              const datas = {
+                id: user.result.email,
+                planing: {
+                  StartTime: formatedDate,
+                  EndTime: formatedEndDate,
+                  Subject: data.compagnie,
+                  IsAllDay: false,
+                  Description: "Travel"
+                },
+              };
+              console.log(datas);
+              dispatch(reservationPlaning(datas));
             }}
           >
             reservation

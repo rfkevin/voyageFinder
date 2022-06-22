@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchReservation, createReservation } from "../../../api/index";
 
+
 export const getReservation = createAsyncThunk(
   "reservation/getReservation",
   async () => {
@@ -18,7 +19,7 @@ export const createReservations = createAsyncThunk(
   "reservation/createReservation",
   async (reservation) => {
     try {
-      const response = await createReservation(reservation);
+      const response = await createReservation(reservation);  
       return response.data;
     } catch (error) {
       console.log(error.message);

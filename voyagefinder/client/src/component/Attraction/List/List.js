@@ -28,8 +28,7 @@ const List = ({ places }) => {
       .fill()
       .map((_ , i) => elRefs[i] || createRef());
     setElRefs(refs);
-    console.log({elRefs});
-  }, [places]);
+  }, [places?.length ]);
 
   return (
     <div className={classes.container}>

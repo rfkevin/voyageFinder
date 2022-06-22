@@ -7,7 +7,7 @@ export const dataFormating = (data) => {
   var indexItem = 0;
   var formatedData = {};
   var boucleItems = [];
-  const boucle = data.data.itineraries.buckets;
+  const boucle = data.itineraries.buckets;
   while (boucle[index]) {
     formatedData[boucle[index].id] = [];
     boucleItems = boucle[index].items;
@@ -19,9 +19,11 @@ export const dataFormating = (data) => {
       struct["origin"] = boucleItems[indexItem].legs[0].origin.name;
       struct["destination"] = boucleItems[indexItem].legs[0].destination.name;
       struct["depart"] = boucleItems[indexItem].legs[0].departure;
-      struct["compagnie"] = boucleItems[indexItem].legs[0].carriers.marketing[0].name;
+      struct["compagnie"] =
+        boucleItems[indexItem].legs[0].carriers.marketing[0].name;
       struct["temps"] = boucleItems[indexItem].legs[0].durationInMinutes;
-      struct["img"] = boucleItems[indexItem].legs[0].carriers.marketing[0].logoUrl;
+      struct["img"] =
+        boucleItems[indexItem].legs[0].carriers.marketing[0].logoUrl;
       formatedData[boucle[index].id].push(struct);
       indexItem++;
     }
@@ -57,18 +59,24 @@ export const flightSlice = createSlice({
       state.data = action.payload;
       return state;
     },
+    getFlight: (state, action) => {
+      return state;
+    },
   },
-  extrareducers: {
+  extraReducers: {
     [getFlightList.pending]: (state) => {
       state.isLoading = true;
     },
     [getFlightList.fulfilled]: (state, action) => {
+      console.log(action.payload);
       state.data = action.payload;
+      console.log(state.data);
       state.isLoading = false;
+      return state;
     },
     [getFlightList.rejected]: (state) => {
       state.isLoading = false;
     },
   },
 });
-export const { setFlight } = flightSlice.actions;
+export const { setFlight, getFlight } = flightSlice.actions;

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { CssBaseline, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getPlacesData } from "../../api/index";
 import Search from "./Search/Search";
@@ -11,8 +11,7 @@ import {
   setCoordinates,
   setLoading,
 } from "../../store/slices";
-import { getReservation } from "./slices/reservatioslice";
-import Navbar  from "../Navbar/Navbar";
+import Navbar from "../Navbar/Navbar";
 
 const AttractionPage = () => {
   const dispatch = useDispatch();
@@ -21,24 +20,17 @@ const AttractionPage = () => {
   const bounds = useSelector((state) => state.bounds);
   const type = useSelector((state) => state.type);
   const rating = useSelector((state) => state.rating);
-  const reservation = useSelector((state) => state.reservation.info);
-
-  useEffect(() => {
-    dispatch(getReservation());
-  }, []);
-
-  console.log(reservation);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       ({ coords: { latitude, longitude } }) =>
         dispatch(setCoordinates({ lat: latitude, lng: longitude }))
     );
-  }, []);
+  }, [dispatch]);
   useEffect(() => {
     const filteredPlaces = places.filter((place) => place.rating > rating);
     dispatch(setFiltered(filteredPlaces));
-  }, [rating]);
+  }, [rating, dispatch, places]);
   useEffect(() => {
     if (bounds.sw && bounds.ne) {
       dispatch(setLoading(true));
@@ -52,7 +44,7 @@ const AttractionPage = () => {
         dispatch(setLoading(false));
       });
     }
-  }, [type, bounds]);
+  }, [type, bounds, dispatch]);
   return (
     <>
       <Navbar />

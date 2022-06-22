@@ -1,12 +1,11 @@
 import { useSelector, useDispatch } from "react-redux";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { prototype } from "./prototype";
-import { setFlight, dataFormating } from "./flightSlice";
+import { setFlight, dataFormating, getFlightList } from "./flightSlice";
 import {
   ProSidebar,
   Menu,
   MenuItem,
-  SubMenu,
   SidebarFooter,
   SidebarHeader,
   SidebarContent,
@@ -15,7 +14,7 @@ import { setDate } from "../Attraction/PlaceDetails/placeDetailsSlice";
 import { DatePicker } from "@mui/lab";
 import Input from "../Auth/input";
 import useStyles from "./style";
-import { CircularProgress, TextField, Button } from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 import * as moment from "moment";
 import "react-pro-sidebar/dist/css/styles.css";
 
@@ -26,15 +25,14 @@ const Search = () => {
     origin: "",
     destination: "",
   };
-  const formatedData = dataFormating(prototype);
-  console.log(formatedData);
   const [formData, setFormData] = useState(initialState);
   const date = useSelector((state) => state.date);
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
     const formateddate = moment(date).format("YYYY-MM-DD").toString();
-    console.log(formateddate);
+    formData['dateResv'] = formateddate;
+    dispatch(getFlightList(formData));
   };
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -85,7 +83,7 @@ const Search = () => {
                   variant="contained"
                   color="primary"
                   onClick={() => {
-                    dispatch(setFlight(formatedData));
+
                   }}
                 >
                   Search

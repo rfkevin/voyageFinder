@@ -1,7 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDate } from "./placeDetailsSlice";
-import { createReservations  } from '../slices/reservatioslice';
+import { createReservations } from "../slices/reservatioslice";
+import { reservationPlaning } from "../../Calendar/CalendarSlice";
 import {
   Box,
   Typography,
@@ -11,17 +12,18 @@ import {
   CardContent,
   CardActions,
   Chip,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import PhoneIcon from "@material-ui/icons/Phone";
-import { DateTimePicker} from '@mui/lab';
+import { DateTimePicker } from "@mui/lab";
 import Rating from "@material-ui/lab/Rating";
 
 import useStyles from "./style.js";
 
 const PlaceDetails = ({ place, selected, refProp }) => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   const date = useSelector((state) => state.date);
   const type = useSelector((state) => state.type);
   const classes = useStyles();
@@ -98,11 +100,11 @@ const PlaceDetails = ({ place, selected, refProp }) => {
           </Button>
         </CardActions>
         <CardActions>
-          <  DateTimePicker
+          <DateTimePicker
             label="Date Picker"
-            renderInput={(params) => <TextField{...params}/>}
+            renderInput={(params) => <TextField {...params} />}
             value={date}
-            minDate = {new Date()}
+            minDate={new Date()}
             onChange={(newvalue) => {
               dispatch(setDate(newvalue.toString()));
             }}
@@ -112,14 +114,40 @@ const PlaceDetails = ({ place, selected, refProp }) => {
           size="small"
           color="primary"
           onClick={() => {
-            dispatch(createReservations({
-              id: "test1",
-              type: type,
-              num: place.phone,
-              etablissment: place.name,
-              confirmation: false,
-              date: date,
-            }));
+            dispatch(
+              createReservations({
+                id: user.result.email,
+                type: type,
+                num: place.phone,
+                etablissment: place.name,
+                confirmation: false,
+                date: date,
+              })
+            );
+            const dates = new Date(date);
+            let formatedDate = null;
+            let formatedEndDate = null;
+            if (type === "hotels"){
+              const endDate = new Date(dates.getTime() + 24 * 60 * 60 * 1000);
+              formatedDate = new Date(dates.toDateString()).toISOString();
+              formatedEndDate = new Date(endDate.toDateString()).toISOString();
+            }else{
+              const endDate = new Date(dates.getTime() + 60 * 60 * 1000);
+              formatedDate = dates.toISOString();
+              formatedEndDate = endDate.toISOString();
+            }
+            const data = {
+              id: user.result.email,
+              planing: {
+                StartTime: formatedDate,
+                EndTime: formatedEndDate,
+                Subject: place.name,
+                IsAllDay: false,
+                Description: type,
+              }
+            };
+            console.log(data);
+            dispatch(reservationPlaning(data));
           }}
         >
           reservation

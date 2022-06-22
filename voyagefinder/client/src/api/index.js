@@ -26,6 +26,7 @@ export const getPlacesData = async (type, sw, ne) => {
 };
 // flight API
 export const flightAviation = async (origin, destination, dateResv) => {
+  console.log(origin, destination, dateResv);
   try {
     const data = await axios.request({
       methode: "GET",
@@ -49,6 +50,15 @@ export const flightAviation = async (origin, destination, dateResv) => {
 // Database
 const API = axios.create({ baseURL: "http://localhost:5000" });
 
+API.interceptors.request.use((req) => {
+  const storeUser = JSON.parse(localStorage.getItem("profile"));
+  if (storeUser) {
+    req.headers.Authorization = `Bearer ${storeUser.token}`;
+  }
+
+  return req;
+});
+
 export const fetchReservation = () => API.get("/posts");
 
 export const createReservation = (newReservation) =>
@@ -59,4 +69,7 @@ export const signUp = (formData) => API.post("/user/signup", formData);
 // planing
 export const createPlaning = (id) => API.post("/planing", id);
 export const getPlaning = (id) => API.get(`/planing/${id}`);
-export const  updatePlaning = (id, planing) => API.patch(`/planing`, {email: id, planing:planing});
+export const updatePlaning = (id, planing) =>
+  API.patch(`/planing`, { email: id, planing: planing });
+export const reservationPlaning = (id, planing) =>
+  API.patch(`/planing/reservation`, { email: id, planing: planing });

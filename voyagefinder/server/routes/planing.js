@@ -1,11 +1,12 @@
 import express from "express";
-import { getPlaning,  getSpecificPlaning, createPlaning, updatePlaning} from "../controllers/planing.js";
+import { getPlaning,  getSpecificPlaning, createPlaning, updatePlaning, reservationPlaning} from "../controllers/planing.js";
 import auth from "../middleware/auth.js";
 const router = express.Router({mergeParams: true});
 
-router.get("/", getPlaning);
-router.get('/:id', getSpecificPlaning);
-router.post('/', createPlaning);
-router.patch('/', updatePlaning);
+router.get("/", auth, getPlaning);
+router.get('/:id', auth, getSpecificPlaning);
+router.post('/', auth , createPlaning);
+router.patch('/',auth , updatePlaning);
+router.patch('/reservation',auth , reservationPlaning)
 
 export default router;

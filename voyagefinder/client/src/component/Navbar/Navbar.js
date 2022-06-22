@@ -6,7 +6,7 @@ import useStyles from "./style";
 import logo from "../../Assets/logo.png";
 import { getUser, logOut } from "../Auth/slices";
 import { useDispatch, useSelector } from "react-redux";
-
+import decode from 'jwt-decode';
 const MyComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -18,7 +18,14 @@ const MyComponent = () => {
 
   }
   useEffect(() => {
-  //  const token = user?.email;
+    const token = user?.token;
+    if(token) {
+      const decodedToken = decode(token);
+
+      if(decodedToken.exp * 1000 < new Date().getTime()){
+        logout();
+      }
+    }
 
     dispatch(getUser(JSON.parse(localStorage.getItem("profile"))));
   }, []);

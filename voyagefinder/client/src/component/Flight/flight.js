@@ -1,21 +1,18 @@
-import React from "react";
+import React , {useEffect} from "react";
 import { Grid, CircularProgress, Typography } from "@mui/material";
 import Search from "./search";
 import Navbar from "../Navbar/Navbar";
 import Card from "./card";
 import useStyles from "./style";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getFlight } from './flightSlice';
 const Flight = () => {
+  const dispatch = useDispatch();
   const flight = useSelector((state) => state.flight.data);
   const isloading = useSelector((state) => state.flight.isLoading);
-//  useEffect(() => {
-    //  try{
-    //dispatch(getFlightList({origin: 'MUC', destination:'BER',dateResv:'2022-06-18'}));
-    //}catch(e){
-//    const test = darinoDataFormating(darinoPrototype);
-//    console.log(test)
-    //}
-//  }, [dispatch]);
+useEffect(() => {
+    console.log(flight)
+ }, [ flight]);
   const classes = useStyles();
   return (
     <>

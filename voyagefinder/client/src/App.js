@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { CssBaseline } from "@material-ui/core";
 import AttractionPage from "./component/Attraction/AttractionPage";
 import { LocalizationProvider } from "@mui/lab";
@@ -7,14 +7,16 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./component/LandingPage/LandingPage";
 import Auth from "./component/Auth/Auth";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import Flight  from './component/Flight/flight';
-import Calendar from './component/Calendar/Calendar';
-import "./App.css"
+import Flight from "./component/Flight/flight";
+import Calendar from "./component/Calendar/Calendar";
+import Page404 from "./component/Page404/page404";
+import "./App.css";
+import ProtectedRoutes from './ProtectedRoutes';
 
 const App = () => {
   return (
     <>
-      <GoogleOAuthProvider clientId="426309683556-t9lvbehn86rhhjs1ktqisv8o16r3ssiq.apps.googleusercontent.com">
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_API}>
         <BrowserRouter>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <CssBaseline />
@@ -22,9 +24,11 @@ const App = () => {
               <Route path="/" element={<LandingPage />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/setplaning" element={<AttractionPage />} />
-              <Route path="/setplaning" element={<AttractionPage />} />
-              <Route path="/flight" element={<Flight />} />
-              <Route path="/myplaning" element={<Calendar />} />
+              <Route element={<ProtectedRoutes />}>
+                <Route path="/flight" element={<Flight />} />
+                <Route path="/myplaning" element={<Calendar />} />
+              </Route>
+                <Route path="*" element={<Page404 />} />
             </Routes>
           </LocalizationProvider>
         </BrowserRouter>

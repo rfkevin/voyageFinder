@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Input from "./input";
-import Icon from "./icon";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authUser } from "./slices";
 import jwt_decode from "jwt-decode";
@@ -14,7 +13,6 @@ import {
   Grid,
   Typography,
   Container,
-  TextField,
 } from "@material-ui/core";
 import { GoogleLogin } from "@react-oauth/google";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -33,8 +31,6 @@ const Auth = () => {
   const classes = useStyles();
   const [formData, setFormData] = useState(initialState);
   const [showPassoword, setShowPassoword] = useState(false);
-  const user = useSelector((state) => state.user);
-  const state = null;
   const [isSignup, setIsSignup] = useState(false);
   const navigate = useNavigate();
   const handleShowPassword = () =>
@@ -44,6 +40,8 @@ const Auth = () => {
     if (isSignup) {
       try {
         dispatch(signup(formData));
+        dispatch(createPlaning(formData.email));
+        console.log(formData)
         navigate("/");
       } catch (e) {
         console.log(e);
@@ -51,6 +49,7 @@ const Auth = () => {
     } else {
       try {
         dispatch(signin(formData));
+        dispatch(createPlaning(formData.email));
         navigate("/");
       } catch (e) {
         console.log(e);

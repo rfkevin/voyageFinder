@@ -12,7 +12,8 @@ const planingSchema = mongoose.Schema({
     Location: {type: String},
     Description : {type: String},
     IsAllDay : {type: Boolean },
-    RecurrenceRule : {type: String}
+    RecurrenceRule : {type: String},
+    CategoryColor: {type: String}
   }]
 });
 

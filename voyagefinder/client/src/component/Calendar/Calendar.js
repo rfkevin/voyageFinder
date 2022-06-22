@@ -6,10 +6,7 @@ import Navbar from "../Navbar/Navbar";
 import { updatePlaning, getPlaning } from "./CalendarSlice";
 
 import {
-  Schedule,
   ScheduleComponent,
-  ViewsDirective,
-  ViewDirective,
   Day,
   Week,
   WorkWeek,
@@ -36,7 +33,6 @@ const Calendar = () => {
     }
   }, [user, dispatch]);
   let modifiedPlaning = [...planing];
-  console.log(modifiedPlaning);
   return (
     <>
       <Navbar />
@@ -57,20 +53,19 @@ const Calendar = () => {
           variant="contained"
           color="primary"
           onClick={() => {
-            console.log(modifiedPlaning.json);
             dispatch(
               updatePlaning({ id: user.result.email, planing: modifiedPlaning})
             );
           }}
         >
-          Search
+          Save
         </Button>
         <ScheduleComponent
           height="650px"
           eventSettings={{ dataSource: modifiedPlaning }}
         >
           <Inject
-            services={[Day, Week, WorkWeek, Agenda, Resize, DragAndDrop]}
+            services={[Day, Week, Month, WorkWeek, Agenda, Resize, DragAndDrop]}
           />
         </ScheduleComponent>
       </Paper>
