@@ -34,7 +34,7 @@ export const signin = async (req, res) => {
   }
 };
 export const signup = async (req, res) => {
-  const { email, password, confirmPassword, firstName, lastName } = req.body;
+  const { email, password, confirmPassword, firstName, lastName, type } = req.body;
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -50,6 +50,8 @@ export const signup = async (req, res) => {
       email,
       password: hashedPassword,
       name: `${firstName} ${lastName}`,
+      type
+
     });
     const token = jwt.sign({ email: result.email, id: result.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
@@ -60,3 +62,21 @@ export const signup = async (req, res) => {
     res.status(500).json({ message: "Somthing went wrong" });
   }
 };
+
+export const getUserList = async(req, res) => {
+  try {
+    const userList = await User.find();
+    res.status(200).json({result: userList, count: userList.length});
+  } catch (error) {
+    res.status(404).json({message: error.message});
+  }
+}
+
+export const deleteUser = async(req, res) => {
+  try {
+    const userList = await User.findOneAndDelete({ '_id' : req.body.key._id });
+    res.status(200).json({result: userList, count: userList.length});
+  } catch (error) {
+    res.status(404).json({message: error.message});
+  }
+}

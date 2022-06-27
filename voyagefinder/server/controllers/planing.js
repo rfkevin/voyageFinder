@@ -1,4 +1,4 @@
-import Planing from "../models/Planing.js";
+import Planing from "../models/planing.js";
 import express from "express";
 
 const router = express.Router();
@@ -14,7 +14,6 @@ export const getPlaning = async (req, res) => {
 
 export const getSpecificPlaning = async (req, res) => {
   const email = req.params.id;
-  console.log(email);
   try {
     const existingPlaning = await Planing.findOne({ email: email });
     if (!existingPlaning) {
@@ -35,17 +34,14 @@ export const updatePlaning = async (req, res) => {
       { email: email, planing: planing },
       { upsert: true, returnDocument: "after" }
     );
-    console.log(existingPlaning);
     res.status(200).json(existingPlaning);
   } catch (error) {
-    console.log(error);
     res.status(404).send({ message: error.message });
   }
 };
 
 export const createPlaning = async (req, res) => {
   const { email, planing } = req.body;
-  console.log(email);
   try {
     const existingPlaning = await Planing.findOne({ email });
 
@@ -84,7 +80,6 @@ export const reservationPlaning = async (req, res) => {
       color = "blue";
       break;
   }
-  console.log("test");
   planing.CategoryColor = color;
   try {
     const existingPlaning = await Planing.findOneAndUpdate(
@@ -92,10 +87,8 @@ export const reservationPlaning = async (req, res) => {
       { $push: { planing: planing } },
       { returnDocument: "after" }
     );
-    console.log(existingPlaning);
     res.status(200).json(existingPlaning);
   } catch (error) {
-    console.log(error);
     res.status(404).send({ message: error.message });
   }
 };

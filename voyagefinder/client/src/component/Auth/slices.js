@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../../api/index";
 
 export const signin = createAsyncThunk(
-  "user/signIn",
+  "user/signin",
   async (formData) => {
     try {
       const data = await api.signIn(formData);
@@ -18,6 +18,7 @@ export const signup = createAsyncThunk(
   "user/signup",
   async (formData) => {
     try {
+      formData.type = "Users";
       const  data  = await api.signUp(formData);
       console.log(data)
       return data.data

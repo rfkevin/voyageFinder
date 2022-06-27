@@ -10,15 +10,14 @@ const auth = async (req, res, next) => {
     let decodedData;
     if (token && isCustomAuth) {
       decodedData = jwt.verify(token,  process.env.JWT_SECRET);
-
-      req.userId = decodedData?.id;
+      req.userId = decodedData?.email;
     } else {
       decodedData = jwt.decode(token);
       req.userId = decodedData?.sub;
     }
     next();
   } catch (error) {
-    console.log(error);
+    return res.status(403).send({ error: { status: 403, message: "Access Denied" } });
   }
 };
 

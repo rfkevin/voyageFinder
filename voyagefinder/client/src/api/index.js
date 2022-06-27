@@ -26,7 +26,6 @@ export const getPlacesData = async (type, sw, ne) => {
 };
 // flight API
 export const flightAviation = async (origin, destination, dateResv) => {
-  console.log(origin, destination, dateResv);
   try {
     const data = await axios.request({
       methode: "GET",
@@ -48,7 +47,7 @@ export const flightAviation = async (origin, destination, dateResv) => {
   }
 };
 // Database
-const API = axios.create({ baseURL: "http://localhost:5000" });
+export const API = axios.create({ baseURL: process.env.REACT_APP_BASE_URL });
 
 API.interceptors.request.use((req) => {
   const storeUser = JSON.parse(localStorage.getItem("profile"));
@@ -73,3 +72,8 @@ export const updatePlaning = (id, planing) =>
   API.patch(`/planing`, { email: id, planing: planing });
 export const reservationPlaning = (id, planing) =>
   API.patch(`/planing/reservation`, { email: id, planing: planing });
+
+// ADMIN
+// listUser
+
+export const getUserList = () => API.get("/user/getUserList");

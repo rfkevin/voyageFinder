@@ -1,4 +1,6 @@
 import React from "react";
+import { AdminLayout } from './component/Admin/AdminLayout';
+
 import { CssBaseline } from "@material-ui/core";
 import AttractionPage from "./component/Attraction/AttractionPage";
 import { LocalizationProvider } from "@mui/lab";
@@ -11,7 +13,12 @@ import Flight from "./component/Flight/flight";
 import Calendar from "./component/Calendar/Calendar";
 import Page404 from "./component/Page404/page404";
 import "./App.css";
-import ProtectedRoutes from './ProtectedRoutes';
+import ProtectedRoutes from "./ProtectedRoutes";
+import ProtectedAdminRoutes from "./ProtectedAdminRoutes";
+import Reservation from "./component/Admin/Reservation/Reseravation";
+import Users from "./component/Admin/Users/Users";
+
+
 
 const App = () => {
   return (
@@ -28,7 +35,14 @@ const App = () => {
                 <Route path="/flight" element={<Flight />} />
                 <Route path="/myplaning" element={<Calendar />} />
               </Route>
-                <Route path="*" element={<Page404 />} />
+
+              <Route element={<ProtectedAdminRoutes />}>
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Users />} />
+                <Route path="/admin/reservation" element={<Reservation />} />
+              </Route>
+              </Route>
+              <Route path="*" element={<Page404 />} />
             </Routes>
           </LocalizationProvider>
         </BrowserRouter>
