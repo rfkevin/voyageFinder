@@ -4,14 +4,12 @@ import Search from "./search";
 import Navbar from "../Navbar/Navbar";
 import Card from "./card";
 import useStyles from "./style";
-import { useSelector, useDispatch } from "react-redux";
-import { getFlight } from './flightSlice';
+import { useSelector } from "react-redux";
 const Flight = () => {
-  const dispatch = useDispatch();
   const flight = useSelector((state) => state.flight.data);
   const isloading = useSelector((state) => state.flight.isLoading);
 useEffect(() => {
-    console.log(flight)
+
  }, [ flight]);
   const classes = useStyles();
   return (

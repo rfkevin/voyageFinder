@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
 export const signin = async (req, res) => {
@@ -34,7 +34,14 @@ export const signin = async (req, res) => {
   }
 };
 export const signup = async (req, res) => {
-  const { email, password, confirmPassword, firstName, lastName, type } = req.body;
+  const {
+    email,
+    password,
+    confirmPassword,
+    firstName,
+    lastName,
+    type,
+  } = req.body;
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -50,12 +57,15 @@ export const signup = async (req, res) => {
       email,
       password: hashedPassword,
       name: `${firstName} ${lastName}`,
-      type
-
+      type,
     });
-    const token = jwt.sign({ email: result.email, id: result.id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { email: result.email, id: result.id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
     res.status(200).json({ result: result, token });
   } catch (e) {
     res.statusMessage = err;
@@ -63,20 +73,28 @@ export const signup = async (req, res) => {
   }
 };
 
-export const getUserList = async(req, res) => {
+export const getUserList = async (req, res) => {
   try {
     const userList = await User.find();
-    res.status(200).json({result: userList, count: userList.length});
+    res.status(200).json({ result: userList, count: userList.length });
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
-}
+};
 
-export const deleteUser = async(req, res) => {
+export const deleteUser = async (req, res) => {
   try {
-    const userList = await User.findOneAndDelete({ '_id' : req.body.key._id });
-    res.status(200).json({result: userList, count: userList.length});
+    const list = req.body.deleted;
+    if (req.body.action === "batch") {
+      userList = await User.deleteMany({
+        _id: { $in: list },
+      });
+      res.status(200).json({ result: userList, count: userList.length });
+    } else {
+      userList = await User.findOneAndDelete({ _id: req.body.key._id });
+      res.status(200).json({ result: userList, count: userList.length });
+    }
   } catch (error) {
-    res.status(404).json({message: error.message});
+    res.status(404).json({ message: error.message });
   }
-}
+};

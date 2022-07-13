@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { usersGrid } from "./Grid";
 import {
   ColumnDirective,
@@ -13,13 +13,12 @@ import {
   Selection,
 } from "@syncfusion/ej2-react-grids";
 import { DataManager, UrlAdaptor } from "@syncfusion/ej2-data";
-import { useDispatch, useSelector } from "react-redux";
 
 import useStyles from "./style";
-import { Paper, Typography, CircularProgress } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 
 const Users = () => {
-  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const baseUrl = process.env.REACT_APP_BASE_lOCAL;
   const storeUser = JSON.parse(localStorage.getItem("profile"));
   const data = new DataManager({
     adaptor: new UrlAdaptor(),

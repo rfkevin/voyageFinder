@@ -51,7 +51,6 @@ const AttractionPage = () => {
       <Search />
       <Grid
         sx={{ overflow: "auto" }}
-        wrap="nowrap"
         container
         spacing={3}
         style={{
