@@ -6,7 +6,6 @@ export const getPlaning = createAsyncThunk(
   async (id) => {
     try {
       const response = await api.getPlaning(id);
-      console.log(response.data.planing);
       return response.data.planing
     } catch (error) {
       console.log(error);
@@ -22,7 +21,6 @@ export const createPlaning = createAsyncThunk(
       const response = await api.createPlaning({email: id , planing:[]});
       return response.data.planing;
     } catch (error) {
-      console.log(error);
       return error.message;
     }
   }
@@ -31,14 +29,11 @@ export const createPlaning = createAsyncThunk(
 export const updatePlaning = createAsyncThunk(
   "planing/updatePlaning",
   async (data) => {
-    console.log(data)
     const { id, planing } = data;
     try {
-      console.log(planing);
       const response = await api.updatePlaning(id, planing);
       return response.data.planing;
     } catch (error) {
-      console.log(error);
       return error.message;
     }
   }
@@ -47,14 +42,11 @@ export const updatePlaning = createAsyncThunk(
 export const reservationPlaning = createAsyncThunk(
   "planing/reservationPlaning",
   async (data) => {
-    console.log(data)
     const { id, planing } = data;
     try {
-      console.log(planing);
       const response = await api.reservationPlaning(id, planing);
       return response.data.planing;
     } catch (error) {
-      console.log(error);
       return error.message;
     }
   }

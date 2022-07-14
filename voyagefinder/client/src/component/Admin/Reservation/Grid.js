@@ -1,4 +1,5 @@
 export const reservationGrid = [
+  { type: 'checkbox', width: '50' },
   { field: '_id',
     headerText: 'Id',
     width: '150',

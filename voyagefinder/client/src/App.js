@@ -1,5 +1,6 @@
 import React from "react";
 import { AdminLayout } from './component/Admin/AdminLayout';
+import Payment from './component/payment/payment';
 
 import { CssBaseline } from "@material-ui/core";
 import AttractionPage from "./component/Attraction/AttractionPage";
@@ -34,6 +35,7 @@ const App = () => {
               <Route element={<ProtectedRoutes />}>
                 <Route path="/flight" element={<Flight />} />
                 <Route path="/myplaning" element={<Calendar />} />
+                <Route path="/payment" element={<Payment />} />
               </Route>
 
               <Route element={<ProtectedAdminRoutes />}>

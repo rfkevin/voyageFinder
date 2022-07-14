@@ -1,19 +1,21 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router";
+import { useLocation } from "react-router";
+import {Navigate, Outlet} from "react-router-dom"
+
 import {} from "./component/Auth/Auth";
 
 const ProtedRoutes = () => {
   const storeUser = JSON.parse(localStorage.getItem("profile"));
-  console.log(storeUser);
+  const location = useLocation();
   if (storeUser) {
     return Object.keys(storeUser).length === 0 &&
       storeUser.constructor === Object ? (
-      <Navigate to="/auth" />
+      <Navigate to="/auth" replace state={{from : location}} />
     ) : (
       <Outlet />
     );
   } else {
-    return <Navigate to="/auth" />;
+    return <Navigate to="/auth" replace state={{from : location}} />;
   }
 };
 

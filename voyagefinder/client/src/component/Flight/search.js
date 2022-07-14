@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import React, { useState } from "react";
-import { prototype } from "./prototype";
-import { setFlight, dataFormating, getFlightList } from "./flightSlice";
+import {  getFlightList } from "./flightSlice";
 import {
   ProSidebar,
   Menu,

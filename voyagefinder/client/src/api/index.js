@@ -47,7 +47,7 @@ export const flightAviation = async (origin, destination, dateResv) => {
   }
 };
 // Database
-export const API = axios.create({ baseURL: process.env.REACT_APP_BASE_URL });
+export const API = axios.create({ baseURL: process.env.REACT_APP_BASE_lOCAL});
 
 API.interceptors.request.use((req) => {
   const storeUser = JSON.parse(localStorage.getItem("profile"));

@@ -3,6 +3,7 @@ import { createReservations } from "../Attraction/slices/reservatioslice";
 import { useDispatch, useSelector } from "react-redux";
 import { Paper, Grid, Typography, Box, Rating, Button } from "@mui/material";
 import { reservationPlaning  } from '../Calendar/CalendarSlice';
+import { useNavigate } from "react-router-dom";
 import {
   AccessTime,
   AirplanemodeActive,
@@ -11,6 +12,7 @@ import {
 import useStyles from "./style";
 
 const Card = ({ data }) => {
+  const navigate = useNavigate();
   const classes = useStyles();
   const dispatch = useDispatch();
   const date = useSelector((state) => state.date);
@@ -82,8 +84,8 @@ const Card = ({ data }) => {
         <Box textAlign="center">
           <Button
             color="primary"
-            onClick={() => {
-              dispatch(
+            onClick={async () => {
+              await dispatch(
                 createReservations({
                   id: user.result.email,
                   type: "Flight",
@@ -111,8 +113,8 @@ const Card = ({ data }) => {
                   Description: "Travel"
                 },
               };
-              console.log(datas);
-              dispatch(reservationPlaning(datas));
+              await dispatch(reservationPlaning(datas));
+              navigate("/myplaning");
             }}
           >
             reservation

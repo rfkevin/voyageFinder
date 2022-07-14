@@ -1,23 +1,16 @@
+import { Button, CircularProgress, Grid, Paper, Typography } from "@mui/material";
+import {
+  Agenda, Day, DragAndDrop, Inject, Month, Resize, ScheduleComponent, Week,
+  WorkWeek
+} from "@syncfusion/ej2-react-schedule";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Paper, Typography, Button } from "@mui/material";
-import { Grid, CircularProgress} from "@mui/material"
 import Navbar from "../Navbar/Navbar";
-import { updatePlaning, getPlaning } from "./CalendarSlice";
-
-import {
-  ScheduleComponent,
-  Day,
-  Week,
-  WorkWeek,
-  Month,
-  Agenda,
-  Inject,
-  Resize,
-  DragAndDrop,
-} from "@syncfusion/ej2-react-schedule";
+import { getPlaning, updatePlaning } from "./CalendarSlice";
 import useStyles from "./style";
+import { useNavigate } from "react-router-dom";
 const Calendar = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const classes = useStyles();
   const user = useSelector((state) => state.user);
@@ -44,7 +37,7 @@ const Calendar = () => {
         </div>
       ) : (
       <Paper elevation={4} className={classes.paper}>
-        <Typography variant="h6" align="center">
+        <Typography variant="h6">
           Calendar
         </Typography>
         <Button
@@ -68,6 +61,18 @@ const Calendar = () => {
             services={[Day, Week, Month, WorkWeek, Agenda, Resize, DragAndDrop]}
           />
         </ScheduleComponent>
+        <Button
+          className={classes.submit}
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            navigate("/payment")
+          }}
+        >
+          Pay for trip
+        </Button>
       </Paper>
     )}
     </>

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setDate } from "./placeDetailsSlice";
 import { createReservations } from "../slices/reservatioslice";
 import { reservationPlaning } from "../../Calendar/CalendarSlice";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -26,6 +27,7 @@ const PlaceDetails = ({ place, selected, refProp }) => {
   const user = useSelector((state) => state.user);
   const date = useSelector((state) => state.date);
   const type = useSelector((state) => state.type);
+  const navigate = useNavigate();
   const classes = useStyles();
   if (selected)
     refProp?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -146,8 +148,8 @@ const PlaceDetails = ({ place, selected, refProp }) => {
                 Description: type,
               }
             };
-            console.log(data);
             dispatch(reservationPlaning(data));
+            navigate("/myplaning");
           }}
         >
           reservation

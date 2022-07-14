@@ -39,7 +39,7 @@ export const getFlightList = createAsyncThunk(
     const { origin, destination, dateResv } = flightData;
     try {
       const response = await flightAviation(origin, destination, dateResv);
-      const formatedresponse = dataFormating(response.data);
+      const formatedresponse = dataFormating(response?.data);
       return formatedresponse;
     } catch (error) {
       console.log(error);
@@ -68,9 +68,7 @@ export const flightSlice = createSlice({
       state.isLoading = true;
     },
     [getFlightList.fulfilled]: (state, action) => {
-      console.log(action.payload);
       state.data = action.payload;
-      console.log(state.data);
       state.isLoading = false;
       return state;
     },

@@ -1,26 +1,19 @@
-import React from "react";
+import { Paper, Typography } from "@mui/material";
 import { DataManager, UrlAdaptor } from "@syncfusion/ej2-data";
-import { reservationGrid } from './Grid';
-import * as api  from '../../../api/index';
 import {
   ColumnDirective,
-  ColumnsDirective,
-  Filter,
+  ColumnsDirective, ContextMenu, Edit, Filter,
   GridComponent,
   Inject,
-  Page,
-  Sort,
-  Edit,
-  Toolbar,
-  Selection,
-  ContextMenu
+  Page, Selection, Sort, Toolbar
 } from "@syncfusion/ej2-react-grids";
-import { Paper, Typography, Button } from "@mui/material";
+import React from "react";
+import { reservationGrid } from './Grid';
 import useStyles from "./style";
 
 
 const Reservation = () => {
-  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const baseUrl = process.env.REACT_APP_BASE_lOCAL;
   const storeUser = JSON.parse(localStorage.getItem("profile"));
   const data = new DataManager({
     adaptor: new UrlAdaptor(),
