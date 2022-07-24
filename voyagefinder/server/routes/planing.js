@@ -5,7 +5,7 @@ const router = express.Router({mergeParams: true});
 
 router.get("/", auth, getPlaning);
 router.get('/:id', auth, getSpecificPlaning);
-router.post('/', auth , createPlaning);
+router.post('/', createPlaning);
 router.patch('/',auth , updatePlaning);
 router.patch('/reservation',auth , reservationPlaning)
 

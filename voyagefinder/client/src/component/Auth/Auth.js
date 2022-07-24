@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import Input from "./input";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authUser } from "./slices";
 import jwt_decode from "jwt-decode";
 import { signin, signup } from "./slices";
-import { createPlaning } from '../Calendar/CalendarSlice';
+import { createPlaning } from "../Calendar/CalendarSlice";
+import { useLocation } from "react-router";
+import { DatePicker } from "@mui/lab";
 import {
   Avatar,
   Button,
@@ -13,6 +15,7 @@ import {
   Grid,
   Typography,
   Container,
+  TextField
 } from "@material-ui/core";
 import { GoogleLogin } from "@react-oauth/google";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -24,33 +27,45 @@ const initialState = {
   email: "",
   password: "",
   confirmPassword: "",
+  dob: "",
+  phone: "",
 };
 
 const Auth = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const [date, setDate] = useState(null);
   const [formData, setFormData] = useState(initialState);
   const [showPassoword, setShowPassoword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const navigate = useNavigate();
+    const location = useLocation();
   const handleShowPassword = () =>
     setShowPassoword((prevShowPassword) => !prevShowPassword);
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (isSignup) {
       try {
-        dispatch(signup(formData));
-        dispatch(createPlaning(formData.email));
-        console.log(formData)
-        navigate("/");
+        await dispatch(signup(formData));
+        await dispatch(createPlaning(formData.email));
+        console.log(formData);
+        if (location.state?.from) {
+          navigate(location.state.from);
+        } else {
+          navigate("/");
+        }
       } catch (e) {
         console.log(e);
       }
     } else {
       try {
-        dispatch(signin(formData));
-        dispatch(createPlaning(formData.email));
-        navigate("/");
+        await dispatch(signin(formData));
+        await dispatch(createPlaning(formData.email));
+        if (location.state?.from) {
+          navigate(location.state.from);
+        } else {
+          navigate("/");
+        }
       } catch (e) {
         console.log(e);
       }
@@ -87,6 +102,31 @@ const Auth = () => {
                   handleChange={handleChange}
                   half
                 />
+                <Input
+                  name="phone"
+                  label="PhoneNumber"
+                  handleChange={handleChange}
+                />
+                <Grid item xs={12} sm= {12}>
+                <DatePicker
+                  label="Date of birth"
+
+                  value={date}
+                  onChange={(newDate) => {
+                    setDate(newDate);
+                    const formatedDate =
+                      date.getDate() +
+                      "/" +
+                      (date.getMonth() + 1) +
+                      "/" +
+                      date.getYear();
+                    handleChange({
+                      target: { name: "dob", value: formatedDate },
+                    });
+                  }}
+                  renderInput={(params) => <TextField {...params} className={classes.date}/>}
+                />
+                </Grid>
               </>
             )}
             <Input
@@ -133,7 +173,11 @@ const Auth = () => {
                 );
                 console.log(decoded);
                 dispatch(createPlaning(decoded.email));
-                navigate("/");
+                if (location.state?.from) {
+                  navigate(location.state.from);
+                } else {
+                  navigate("/");
+                }
               } catch (err) {
                 console.log(err);
               }
